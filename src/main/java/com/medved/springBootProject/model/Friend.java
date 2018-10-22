@@ -20,10 +20,17 @@ public class Friend
 
     @Column(name = "result_friend_request")
     @Enumerated(EnumType.STRING)
-    private ResultFriendRequest resultFriendRequest;
+    private ResultFriendRequest friendRequest;
 
     public Friend()
     {
+    }
+
+    public Friend(User fromUser, Long toUserId, ResultFriendRequest friendRequest)
+    {
+        this.fromUser = fromUser;
+        this.toUserId = toUserId;
+        this.friendRequest = friendRequest;
 
     }
 
@@ -57,13 +64,13 @@ public class Friend
         this.toUserId = toUserId;
     }
 
-    public ResultFriendRequest isResultFriendRequest()
+    public ResultFriendRequest isFriendRequest()
     {
-        return resultFriendRequest;
+        return friendRequest;
     }
 
-    public void setResultFriendRequest(ResultFriendRequest resultFriendRequest)
+    public void setResultFriendRequest(ResultFriendRequest friendRequest)
     {
-        this.resultFriendRequest = resultFriendRequest;
+        this.friendRequest = friendRequest;
     }
 }
