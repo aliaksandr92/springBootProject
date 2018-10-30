@@ -4,7 +4,15 @@
 <body>
     <th:block th:fragment="header">
         <header class="fixed-top">
-
+            <div class="container-fluid h-100">
+                <div class="row h-100">
+                    <div class="col-sm-6 offset-1 align-self-center">
+                        <span sec:authorize="isAuthenticated()" style="display: inline-block;">
+                            <a th:href="@{'/id' + ${myId}}">My Page</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </header>
     </th:block>
 </body>

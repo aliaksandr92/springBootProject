@@ -22,7 +22,7 @@ public class Friend
     @Enumerated(EnumType.STRING)
     private ResultFriendRequest friendRequest;
 
-    public Friend()
+    private Friend()
     {
     }
 

@@ -7,4 +7,5 @@ public interface UserService
     void createUser(User user);
     void deleteUser(Long id);
     User findByLogin(String login);
+    User findUserById(Long id);
 }

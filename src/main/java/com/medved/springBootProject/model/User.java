@@ -1,7 +1,5 @@
 package com.medved.springBootProject.model;
 
-import com.medved.springBootProject.model.enums.Role;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
@@ -32,27 +30,30 @@ public class User
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @NotNull
+    @Column(name = "gender")
+    private String gender;
 
-    @OneToMany
-    private Set<Article> articles = new HashSet<>();
+    @Column(name = "picture")
+    private String picture;
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    private Set<Post> posts = new HashSet<>();
 
     @OneToMany
     private Set<Friend> friends = new HashSet<>();
 
-    public User()
+    private User()
     {
     }
 
-    public User(String firstName, String lastName, String login, String password, Role role)
+    public User(String firstName, String lastName, String gender, String login, String password)
     {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.gender = gender;
         this.login = login;
         this.password = password;
-        this.role = role;
     }
 
     public Long getId()
@@ -105,14 +106,34 @@ public class User
         this.password = password;
     }
 
-    public Set<Article> getArticles()
+    public String getGender()
     {
-        return articles;
+        return gender;
     }
 
-    public void setArticles(Set<Article> articles)
+    public void setGender(String gender)
     {
-        this.articles = articles;
+        this.gender = gender;
+    }
+
+    public String getPicture()
+    {
+        return picture;
+    }
+
+    public void setPicture(String picture)
+    {
+        this.picture = picture;
+    }
+
+    public Set<Post> getPosts()
+    {
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts)
+    {
+        this.posts = posts;
     }
 
     public Set<Friend> getFriends()

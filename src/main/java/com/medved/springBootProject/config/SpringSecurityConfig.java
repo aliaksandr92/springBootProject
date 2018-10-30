@@ -36,8 +36,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter
         http.headers().frameOptions().disable();
 
         http.authorizeRequests()
-                .antMatchers("/", "/css/**", "/images/**", "/webjars/**", "/h2-console/**").permitAll()
-                .antMatchers("/userPage/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/", "/register/**", "/createNewUser/**", "/css/**", "/images/**", "/webjars/**", "/h2-console/**").permitAll()
+                .antMatchers("/userPage/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -58,10 +58,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter
     {
         auth.jdbcAuthentication().dataSource(dataSource)
                 .usersByUsernameQuery(
-                        "select login, password, '1' from user where login=?"
+                        "select login, password, '1' from users where login=?"
                 )
                 .authoritiesByUsernameQuery(
-                        "select login, 'ROLE_ADMIN' from user where login=?"
+                        "select login, 'ROLE_ADMIN' from users where login=?"
                 );
 
         /*auth.inMemoryAuthentication()

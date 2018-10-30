@@ -4,13 +4,47 @@
 }
 
 html, body {
-    height: 100vh;
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    background: url("../images/bg.jpg") no-repeat center center fixed;
+    background-size: cover;
+}
+
+header a {
+    color: #000;
+}
+
+#welcomeMsg {
+    font-family: fantasy;
+    color: white;
+    text-shadow: 1px 1px 1px orangered;
+}
+
+#welcomeMsg span:first-child {
+    font-size: 60px;
+}
+
+#welcomeMsg span:last-child {
+    font-size: 40px;
+}
+
+#fullPage {
+    width: 100%;
+    min-height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+#logo {
+    width: 100%;
 }
 
 header, footer {
     width: 100%;
     height: 50px;
-    background: -webkit-linear-gradient(45deg, #EECFBA, #C5DDE8);
+    background: -webkit-linear-gradient(45deg, rgba(238, 207, 186, 0.5), rgba(197, 221, 232, 0.5));
 }
 
 header {
