@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
-public class HomeController implements ApplicationListener<ContextRefreshedEvent>
+public class UserController implements ApplicationListener<ContextRefreshedEvent>
 {
 
     @Autowired
@@ -43,27 +43,13 @@ public class HomeController implements ApplicationListener<ContextRefreshedEvent
         userService.createUser(user1);
         userService.createUser(user2);
         userService.createUser(user3);
-
-        Post post = new Post("AAAA", "BBBB");
-        Post post1 = new Post("BEATA", "LIUBART");
-
-        user1.getPosts().add(post);
-        user1.getPosts().add(post1);
-
-        post.setUser(user1);
-        post1.setUser(user1);
-
-        postService.createPost(post);
-        postService.createPost(post1);
-
-
     }
 
     @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
-    public String indexPage(Model model, Authentication authentication)
+    public String indexPage(Model model, Authentication auth)
     {
-        if (authentication != null) {
-            String login = authentication.getName();
+        if (auth != null) {
+            String login = auth.getName();
 
             User user = userService.findByLogin(login);
 
@@ -101,39 +87,18 @@ public class HomeController implements ApplicationListener<ContextRefreshedEvent
         return "redirect:/register";
     }
 
-
-    @RequestMapping(value = "/id{id}/addPost", method = RequestMethod.POST)
-    public String addNewPost(Model model, Authentication authentication, @PathVariable("id") Long id,
-                             @RequestParam("userPost") String userPost)
-    {
-        User fromUser = userService.findByLogin(authentication.getName());
-        User toUser = userService.findUserById(id);
-
-        if (userPost != null) {
-            Post post = new Post(userPost, id);
-
-            fromUser.getPosts().add(post);
-            post.setUser(fromUser);
-
-            postService.createPost(post);
-        }
-
-        return "redirect:/id" + id;
-    }
-
-
     @RequestMapping(value = "/userPage", method = RequestMethod.GET)
-    public String userPage(Model model, Authentication authentication)
+    public String userPage(Model model, Authentication auth)
     {
-        User user = userService.findByLogin(authentication.getName());
+        User user = userService.findByLogin(auth.getName());
 
         return "redirect:/id" + user.getId();
     }
 
     @RequestMapping(value = "/id{id}", method = RequestMethod.GET)
-    public String userInfo(Model model, Authentication authentication, @PathVariable("id") Long id)
+    public String userInfo(Model model, Authentication auth, @PathVariable("id") Long id)
     {
-        User main = userService.findByLogin(authentication.getName());
+        User main = userService.findByLogin(auth.getName());
         User second = userService.findUserById(id);
 
         boolean ownPost = false;
@@ -146,20 +111,28 @@ public class HomeController implements ApplicationListener<ContextRefreshedEvent
         List<Post> userPosts = postService.getPostByToUserId(id);
         model.addAttribute("posts", userPosts);
 
-        model.addAttribute("ownPage", ownPost);
+        model.addAttribute("ownPost", ownPost);
 
+        String link = "/id" + id;
+        String action = "It's your page";
+
+
+        if (main.getId() != id) {
+            if (!main.getFriend().contains(second) && !main.getWait().contains(second)) {
+                link = "/id" + id + "/addToFriends";
+                action = "Add to friends";
+            } else if (main.getWait().contains(second)) {
+                link = "/id" + id;
+                action = "Wait for answer";
+            } else {
+                link = "/id" + id + "/deleteFromFriends";
+                action = "Delete from friends";
+            }
+        }
+
+
+        model.addAttribute("link", link);
+        model.addAttribute("action", action);
         return "userInfo";
-    }
-
-    @RequestMapping(value = "/id{userId}/deletePost{postId}", method = RequestMethod.GET)
-    public String deletePost(Model model, Authentication auth, @PathVariable("userId") Long userId,
-                             @PathVariable("postId") Long postId)
-    {
-        Post post = postService.getPostById(postId);
-
-        userService.findUserById(userId).getPosts().remove(post);
-        postService.deletePost(postId);
-
-        return "redirect:/id" + userId;
     }
 }

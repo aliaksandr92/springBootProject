@@ -6,9 +6,11 @@
         <header class="fixed-top">
             <div class="container-fluid h-100">
                 <div class="row h-100">
-                    <div class="col-sm-6 offset-1 align-self-center">
+                    <div class="col-sm-11 offset-1 align-self-center">
                         <span sec:authorize="isAuthenticated()" style="display: inline-block;">
                             <a th:href="@{'/id' + ${myId}}">My Page</a>
+                            <a class="ml-3" th:href="@{'/id' + ${myId} + '/friends'}">Friends</a>
+                            <a class="ml-3" th:href="@{'/id' + ${myId} + '/searchPeoples'}">Search</a>
                         </span>
                     </div>
                 </div>

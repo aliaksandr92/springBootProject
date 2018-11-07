@@ -36,7 +36,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter
         http.headers().frameOptions().disable();
 
         http.authorizeRequests()
-                .antMatchers("/", "/register/**", "/createNewUser/**", "/css/**", "/images/**", "/webjars/**", "/h2-console/**").permitAll()
+                .antMatchers("/", "/register/**", "/createNewUser/**", "/css/**", "/**/images/**", "/webjars/**", "/h2-console/**").permitAll()
                 .antMatchers("/userPage/**").authenticated()
                 .anyRequest().authenticated()
                 .and()

@@ -25,14 +25,9 @@ public class Post
     {
     }
 
-    public Post(String postName, String postText)
+    public Post(User fromUserId, String postText, Long toUserId)
     {
-        this.postName = postName;
-        this.postText = postText;
-    }
-
-    public Post(String postText, Long toUserId)
-    {
+        this.fromUserId = fromUserId;
         this.postText = postText;
         this.toUserId = toUserId;
     }

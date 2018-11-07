@@ -1,32 +1,30 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.1.3/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" th:href="@{css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <div id="fullPage">
-        <div style="height: 100px;"></div>
-        <div id="welcomeMsg" class="mb-5" style="text-align: center;">
-            <p>
-                <span>WELCOME</span><br>
-                <span>
+<div id="fullPage">
+    <div style="height: 100px;"></div>
+    <div id="welcomeMsg" class="mb-5" style="text-align: center;">
+        <p>
+            <span>WELCOME</span><br>
+            <span>
                     to new Social Network
                 </span>
-            </p>
-        </div>
-        <div class="container-fluid mt-5">
-            <div class="row">
-                <div class="col-md-4 offset-md-4" style="text-align: center;">
-                    <a class="btn btn-outline-primary btn-block mb-3" href="/userPage" th:href="@{/userPage}">Sign In</a>
-                    <a class="btn btn-outline-primary btn-block" href="/register" th:href="@{/register}">Sign Up</a>
-                </div>
+        </p>
+    </div>
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-md-4 offset-md-4" style="text-align: center;">
+                <a class="btn btn-outline-primary btn-block mb-3" href="/userPage" th:href="@{/userPage}">Sign In</a>
+                <a class="btn btn-outline-primary btn-block" href="/register" th:href="@{/register}">Sign Up</a>
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>

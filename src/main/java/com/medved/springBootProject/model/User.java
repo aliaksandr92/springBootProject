@@ -2,7 +2,9 @@ package com.medved.springBootProject.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -40,8 +42,11 @@ public class User
     @OneToMany(cascade = CascadeType.REMOVE)
     private Set<Post> posts = new HashSet<>();
 
-    @OneToMany
-    private Set<Friend> friends = new HashSet<>();
+    @OneToMany(cascade = CascadeType.REMOVE)
+    private Set<User> friend = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    private Set<User> wait = new HashSet<>();
 
     private User()
     {
@@ -136,13 +141,23 @@ public class User
         this.posts = posts;
     }
 
-    public Set<Friend> getFriends()
+    public Set<User> getFriend()
     {
-        return friends;
+        return friend;
     }
 
-    public void setFriends(Set<Friend> friends)
+    public void setFriend(Set<User> friend)
     {
-        this.friends = friends;
+        this.friend = friend;
+    }
+
+    public Set<User> getWait()
+    {
+        return wait;
+    }
+
+    public void setWait(Set<User> wait)
+    {
+        this.wait = wait;
     }
 }
