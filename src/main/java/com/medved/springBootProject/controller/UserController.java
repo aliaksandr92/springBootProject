@@ -14,7 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -78,14 +84,26 @@ public class UserController implements ApplicationListener<ContextRefreshedEvent
     @RequestMapping(value = "/createNewUser", method = RequestMethod.POST)
     public String createUser(Model model, @RequestParam("first_name") String firstName, @RequestParam("last_name") String lastName,
                              @RequestParam("gender") String gender, @RequestParam("username") String login,
-                             @RequestParam("password") String pass)
+                             @RequestParam("password") String pass, @RequestParam("pic") MultipartFile pic)
     {
         if (userService.findByLogin(login) == null) {
             User newUser = new User(firstName, lastName, gender, login, pass);
+            newUser.setPicture(pic.getOriginalFilename().substring(0, pic.getOriginalFilename().indexOf('.')));
+
+            try {
+                byte[] file = pic.getBytes();
+                /*(new File("src/main/resources/static/images/" + newUser.getLogin())).mkdir();*/
+                Path path = Paths.get("src/main/resources/static/images/" + newUser.getPicture() + ".jpg");
+                Files.write(path, file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             userService.createUser(newUser);
 
             return "redirect:/";
         }
+
         return "redirect:/register";
     }
 

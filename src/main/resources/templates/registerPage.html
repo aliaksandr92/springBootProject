@@ -12,7 +12,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6 offset-md-3">
-                    <form class="login-form" action="/createNewUser" method="post">
+                    <form class="login-form" action="/createNewUser" method="post" enctype="multipart/form-data">
                         <table class="table">
                             <tr>
                                 <td colspan="2" id="welcomeMsg">
@@ -48,6 +48,14 @@
                                 </td>
                                 <td>
                                     <input id="password" class="form-control" name="password" placeholder='Your password' type='password' required>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="pic">You avatar: </label>
+                                </td>
+                                <td>
+                                    <input type="file" id="pic" class="form-control" name="pic">
                                 </td>
                             </tr>
                             <tr>
