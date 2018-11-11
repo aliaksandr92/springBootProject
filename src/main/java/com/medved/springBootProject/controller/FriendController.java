@@ -19,19 +19,49 @@ public class FriendController
     @RequestMapping(value = "/id{userId}/addToFriends", method = RequestMethod.GET)
     public String addToFriends(Model model, Authentication auth, @PathVariable("userId") Long userId)
     {
-        User user = userService.findByLogin(auth.getName());
-        User fr = userService.findUserById(userId);
+        User mainUser = userService.findByLogin(auth.getName());
+        User secondUser = userService.findUserById(userId);
 
-        /*if (friendService.getFriendByFromUserAndToUser(user, userId) == null) {
-            Friend friend = new Friend(user, userId, ResultFriendRequest.WAITING);
-            user.getFriends().add(friend);
-            friendService.createFriend(friend);
-        }*/
-
-        if (!user.getWait().contains(fr) && !user.getFriend().contains(fr)) {
-            user.getWait().add(fr);
-            userService.createUser(user);
+        if (!mainUser.getInputRequest().contains(secondUser) && !mainUser.getFriends().contains(secondUser)
+                && !mainUser.getOutputRequest().contains(secondUser)) {
+            mainUser.getOutputRequest().add(secondUser);
+            secondUser.getInputRequest().add(mainUser);
+            userService.createUser(mainUser);
+            userService.createUser(secondUser);
         }
+
+        return "redirect:/id" + userId;
+    }
+
+    @RequestMapping(value = "/id{userId}/acceptFriendRequest", method = RequestMethod.GET)
+    public String acceptFriendRequest(Model model, Authentication auth, @PathVariable("userId") Long userId)
+    {
+        User mainUser = userService.findByLogin(auth.getName());
+        User secondUser = userService.findUserById(userId);
+
+        mainUser.getInputRequest().remove(secondUser);
+        mainUser.getFriends().add(secondUser);
+
+        secondUser.getOutputRequest().remove(mainUser);
+        secondUser.getFriends().add(mainUser);
+
+        userService.createUser(mainUser);
+        userService.createUser(secondUser);
+
+        return "redirect:/id" + userId;
+    }
+
+    @RequestMapping(value = "/id{userId}/declineFriendRequest", method = RequestMethod.GET)
+    public String declineFriendRequest(Model model, Authentication auth, @PathVariable("userId") Long userId)
+    {
+        User mainUser = userService.findByLogin(auth.getName());
+        User secondUser = userService.findUserById(userId);
+
+        mainUser.getInputRequest().remove(secondUser);
+        secondUser.getOutputRequest().remove(mainUser);
+
+        userService.createUser(mainUser);
+        userService.createUser(secondUser);
 
         return "redirect:/id" + userId;
     }
@@ -39,42 +69,44 @@ public class FriendController
     @RequestMapping(value = "/id{userId}/deleteFromFriends", method = RequestMethod.GET)
     public String deleteFromFriends(Model model, Authentication auth, @PathVariable("userId") Long userId)
     {
-        User user = userService.findByLogin(auth.getName());
-        User friend = userService.findUserById(userId);
+        User mainUser = userService.findByLogin(auth.getName());
+        User secondUser = userService.findUserById(userId);
 
-        /*if (friendService.getFriendByFromUserAndToUser(user, userId) != null) {
-            Friend friend = new Friend(user, userId, ResultFriendRequest.WAITING);
-            user.getFriends().remove(friend);
-            friendService.deleteFriend(friend);
-        }*/
-
-        if (user.getFriend().contains(friend)) {
-            user.getFriend().remove(friend);
-            userService.createUser(user);
+        if (mainUser.getFriends().contains(secondUser) && secondUser.getFriends().contains(mainUser)) {
+            mainUser.getFriends().remove(secondUser);
+            secondUser.getFriends().remove(mainUser);
+            userService.createUser(mainUser);
+            userService.createUser(secondUser);
         }
 
         return "redirect:/id" + userId;
     }
 
-    @RequestMapping(value = "/id{userId}/acceptFriendRequest{friendId}", method = RequestMethod.GET)
-    public String acceptFriendRequest(Model model, Authentication auth, @PathVariable("userId") Long userId)
+    @RequestMapping(value = "/id{userId}/friends", method = RequestMethod.GET)
+    public String showListOfFriends(Model model, Authentication auth, @PathVariable("userId") Long userId)
     {
-        User user = userService.findByLogin(auth.getName());
-        User friend = userService.findUserById(userId);
+        User mainUser = userService.findByLogin(auth.getName());
+        User secondUser = userService.findUserById(userId);
 
-        /*if (user.getFriend().contains(friend)) {
-            user.getFriend().remove(friend);
-            userService.createUser(user);
-        }*/
+        model.addAttribute("myId", mainUser.getId());
+        model.addAttribute("friends", secondUser.getFriends());
 
-        user.getWait().remove(friend);
-        user.getFriend().add(friend);
-        friend.getFriend().add(user);
+        model.addAttribute("count", mainUser.getInputRequest().size());
 
-        userService.createUser(user);
-        userService.createUser(friend);
-
-        return "redirect:/id" + userId;
+        return "listFriends";
     }
 
+    @RequestMapping(value = "/id{userId}/requests", method = RequestMethod.GET)
+    public String showInputRequests(Model model, Authentication auth, @PathVariable("userId") Long userId)
+    {
+        User mainUser = userService.findByLogin(auth.getName());
+        User secondUser = userService.findUserById(userId);
+
+        model.addAttribute("myId", mainUser.getId());
+        model.addAttribute("requests", secondUser.getInputRequest());
+
+        model.addAttribute("count", mainUser.getInputRequest().size());
+
+        return "listRequests";
+    }
 }

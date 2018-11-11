@@ -13,21 +13,22 @@
     <main class="container">
         <div class="row" style="background: cadetblue; min-height: 100vh; padding-top: 50px;">
             <table class="table table-dark">
-                <tr th:each="user:${users}">
+                <tr th:each="request:${requests}">
                     <td style="width: 20%;">
-                        <th:block th:if="${user.getPicture()} != null">
-                            <img class="logo" th:src="@{'/images/' + ${user.getPicture()} + '.jpg'}"/>
+                        <th:block th:if="${request.getPicture()} != null">
+                            <img class="logo" th:src="@{'/images/' + ${request.getPicture()} + '.jpg'}"/>
                         </th:block>
-                        <th:block th:if="${user.getPicture()} == null">
+                        <th:block th:if="${request.getPicture()} == null">
                             <img class="logo" th:src="@{'/images/pic.jpg'}"/>
                         </th:block>
                     </td>
                     <td>
-                        <a th:href="@{'/id' + ${user.getId()}}" th:text="${user.getFirstName() + ' ' + user.getLastName()}"></a>
+                        <a th:href="@{'/id' + ${request.getId()}}" th:text="${request.getFirstName() + ' ' + request.getLastName()}"></a>
                     </td>
-                    <!--<td>
-                        <a class="btn btn-primary btn-block mt-3" th:href="${link}" th:text="${action}">Action to user</a>
-                    </td>-->
+                    <td style="width: 20%;">
+                        <a class="btn btn-primary btn-block btn-sm" th:href="@{'/id' + ${request.getId()} + '/acceptFriendRequest'}">Accept</a>
+                        <a class="btn btn-primary btn-block btn-sm" th:href="@{'/id' + ${request.getId()} + '/declineFriendRequest'}">Remove</a>
+                    </td>
                 </tr>
             </table>
         </div>

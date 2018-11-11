@@ -35,9 +35,11 @@ public class UserController implements ApplicationListener<ContextRefreshedEvent
     private void initData()
     {
         User user = new User("Alex", "Medvedev", "Male", "user", "pass");
-        User user1 = new User("Lex", "Med", "Male", "user1", "pass");
-        User user2 = new User("BEata", "LIUBART", "Female", "user2", "pass");
-        User user3 = new User("SERGEY", "Petrovich", "Male", "user3", "pass");
+        User user1 = new User("Michael", "Martianov", "Male", "user1", "pass");
+        User user2 = new User("Beata", "Liubart", "Female", "user2", "pass");
+        User user3 = new User("Denis", "Levko", "Male", "user3", "pass");
+
+        user.setPicture("id1");
 
         userService.createUser(user);
         userService.createUser(user1);
@@ -102,6 +104,7 @@ public class UserController implements ApplicationListener<ContextRefreshedEvent
         User second = userService.findUserById(id);
 
         boolean ownPost = false;
+        boolean hasPicture = false;
 
         if (main.getId() == id) ownPost = true;
 
@@ -118,18 +121,22 @@ public class UserController implements ApplicationListener<ContextRefreshedEvent
 
 
         if (main.getId() != id) {
-            if (!main.getFriend().contains(second) && !main.getWait().contains(second)) {
-                link = "/id" + id + "/addToFriends";
-                action = "Add to friends";
-            } else if (main.getWait().contains(second)) {
-                link = "/id" + id;
-                action = "Wait for answer";
-            } else {
+            if (main.getFriends().contains(second)) {
                 link = "/id" + id + "/deleteFromFriends";
-                action = "Delete from friends";
+                action = "Remove";
+            } else if (main.getOutputRequest().contains(second)) {
+                link = "/id" + id;
+                action = "Pending";
+            } else if (main.getInputRequest().contains(second)) {
+                link = "/id" + id + "/acceptFriendRequest";
+                action = "Accept";
+            } else {
+                link = "/id" + id + "/addToFriends";
+                action = "Send Request";
             }
         }
 
+        model.addAttribute("count", main.getInputRequest().size());
 
         model.addAttribute("link", link);
         model.addAttribute("action", action);

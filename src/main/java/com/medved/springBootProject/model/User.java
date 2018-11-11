@@ -1,21 +1,16 @@
 package com.medved.springBootProject.model;
 
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User
+public class User extends AbstractPersistable<Long>
 {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     @NotNull
     @Column(name = "first_name")
     private String firstName;
@@ -42,11 +37,14 @@ public class User
     @OneToMany(cascade = CascadeType.REMOVE)
     private Set<Post> posts = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.REMOVE)
-    private Set<User> friend = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    private Set<User> friends = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.REMOVE)
-    private Set<User> wait = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    private Set<User> inputRequest = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    private Set<User> outputRequest = new HashSet<>();
 
     private User()
     {
@@ -59,16 +57,6 @@ public class User
         this.gender = gender;
         this.login = login;
         this.password = password;
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
     }
 
     public String getFirstName()
@@ -141,23 +129,33 @@ public class User
         this.posts = posts;
     }
 
-    public Set<User> getFriend()
+    public Set<User> getFriends()
     {
-        return friend;
+        return friends;
     }
 
-    public void setFriend(Set<User> friend)
+    public void setFriends(Set<User> friends)
     {
-        this.friend = friend;
+        this.friends = friends;
     }
 
-    public Set<User> getWait()
+    public Set<User> getInputRequest()
     {
-        return wait;
+        return inputRequest;
     }
 
-    public void setWait(Set<User> wait)
+    public void setInputRequest(Set<User> inputRequest)
     {
-        this.wait = wait;
+        this.inputRequest = inputRequest;
+    }
+
+    public Set<User> getOutputRequest()
+    {
+        return outputRequest;
+    }
+
+    public void setOutputRequest(Set<User> outputRequest)
+    {
+        this.outputRequest = outputRequest;
     }
 }

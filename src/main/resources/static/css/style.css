@@ -19,6 +19,14 @@ header a , footer a{
     font-family: "Marker Felt";
 }
 
+#count {
+    text-shadow: 1px 1px 2px cyan, -1px -1px 2px cyan, -1px 1px 2px cyan, 1px -1px 2px cyan;
+}
+
+.headerPadding {
+    height: 50px;
+}
+
 #welcomeMsg {
     font-family: fantasy;
     color: white;
@@ -39,7 +47,7 @@ header a , footer a{
     background: rgba(0, 0, 0, 0.6);
 }
 
-#logo {
+.logo {
     width: 100%;
 }
 

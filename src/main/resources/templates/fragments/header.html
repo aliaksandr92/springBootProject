@@ -9,8 +9,15 @@
                     <div class="col-sm-11 offset-1 align-self-center">
                         <span sec:authorize="isAuthenticated()" style="display: inline-block;">
                             <a th:href="@{'/id' + ${myId}}">My Page</a>
-                            <a class="ml-3" th:href="@{'/id' + ${myId} + '/friends'}">Friends</a>
-                            <a class="ml-3" th:href="@{'/id' + ${myId} + '/searchPeoples'}">Search</a>
+                            <a class="ml-3" th:href="@{'/id' + ${myId} + '/friends'}">My Friends</a>
+                            <a class="ml-3" th:href="@{'/id' + ${myId} + '/requests'}">
+                                Requests
+                                <th:block th:if="${count} != 0">
+                                    <span id="count" th:text="' (' + ${count} + ')'"></span>
+                                </th:block>
+                            </a>
+                            <a class="ml-3" th:href="@{'/searchPeoples'}">Search</a>
+                            <a class="ml-3" th:href="@{'/edit'}">Edit</a>
                         </span>
                     </div>
                 </div>

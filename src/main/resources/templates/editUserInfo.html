@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.1.3/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div id="fullPage">
+    <th:block th:replace="fragments/header :: header"/>
+
+    <main class="container">
+        <div class="row" style="background: cadetblue; min-height: 100vh; padding-top: 50px;">
+            <table class="table table-dark">
+                <form class="form-group" th:action="@{/editUserInfo}" method="post">
+                    <tr>
+                        <td>
+                            <label for="firstName">
+                                First name:
+                            </label>
+                        </td>
+                        <td>
+                            <input type="text" id="firstName" name="firstName" th:value="${mainUser.getFirstName()}">
+                        </td>
+                        <td>
+                            <label for="lastName">
+                                Last name:
+                            </label>
+                        </td>
+                        <td>
+                            <input type="text" id="lastName" name="lastName" th:value="${mainUser.getLastName()}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" style="text-align: center;">
+                            <input class="btn btn-primary" type="submit">
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </div>
+    </main>
+
+    <th:block th:replace="fragments/footer :: footer"/>
+</div>
+</body>
+</html>
